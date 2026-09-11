@@ -5,10 +5,10 @@ import urllib.request
 import time
 import sys
 
-# Direct URL input instead of local file
+# Playlist URL and specific User-Agent as requested
 PLAYLIST_URL = "https://game.playindia.fun/Jtv/RiYlIZ/Playlist.m3u"
 OUTPUT_FILE = "final_playlist.m3u"
-USER_AGENT = "Denver1769"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 def fetch_playlist_content():
     print("Playlist download ho rahi hai...")
@@ -75,7 +75,6 @@ def process_playlist():
                 prefix = "#KODIPROP:inputstream.adaptive.license_key="
                 new_content = new_content.replace(prefix + license_url, prefix + keys_json)
             
-            # GitHub logs vich \r di jagah har 10 items baad print hovega taaki logs saaf rehn
             if completed % 10 == 0 or completed == len(matches):
                 print(f"Progress: {completed}/{len(matches)} processed")
 
