@@ -1,0 +1,32 @@
+name: Update M3U Playlist
+
+on:
+  workflow_dispatch: # GitHub website ton manual run karan layi
+  repository_dispatch: # Bahri source ya external API ton run karan layi
+  schedule:
+    - cron: '*/15 * * * *' # Har 15 minute baad automatically chalega
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Run script
+      run: python playlist_script.py
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "GitHub Action Bot"
+        git config --global user.email "action@github.com"
+        git add final_playlist.m3u
+        # --allow-empty nall chahe file same hove, taan vi commit te push lazmi hovega
+        git commit --allow-empty -m "Auto-update playlist [skip ci]"
+        git push
