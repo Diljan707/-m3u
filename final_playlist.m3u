@@ -7,7 +7,7 @@ x-tvg-url="https://whythishome.github.io/epg/guides/dishtv.in_en.xml.gz"
 #KODIPROP:inputstream.adaptive.license_key={"keys": [{"kty": "oct", "k": "gQBywAXR3oNn94UcJP2vFA", "kid": "0FsnJhdVkVf6FouOfg_y8w"}, {"kty": "oct", "k": "3Gr5f_jI2vglLmikUkKqBw", "kid": "G0mssTz4kXZrWRcsJ7tQcw"}, {"kty": "oct", "k": "5h7y8N23dD_2TAmK2n4EFw", "kid": "Leuj5QF13ulPKpsqAk87wA"}, {"kty": "oct", "k": "Bp2wjHcE9ZOnMKsOc-_inA", "kid": "tc-I0vJmk2k0UjtApwRAMA"}, {"kty": "oct", "k": "snl85eQD7iLY42xtXytmMA", "kid": "6xkRPBHOXPuAyJaWdloBhw"}]}
 #EXTINF:-1 tvg-id="143" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/CNBCTV18Prime.png" catchup-type="append" catchup-days="8" catchup-source="&begin={utc}&end={utcend}" group-title="English",CNBC TV18 Prime
 #EXTVLCOPT:http-user-agent=Denver1769
-https://jiotvmblive.cdn.jio.com/bpk-tv/CNBCTV18Prime_MOB/WDVLive/index.mpd%7Ccookie=__hdnea__=st=1789169404~exp=1789191004~acl=/*~hmac=e852f6de5b588e35fd08bbdb75029ffe8eb038f0b1d647af498691a22526dc84&User-Agent=Denver1769
+https://jiotvmblive.cdn.jio.com/bpk-tv/CNBCTV18Prime_MOB/WDVLive/index.mpd%7Ccookie=__hdnea__=st=1789169404~exp=1789191004~acl=/*~hmac=e852f6de5b588e35fd08bbdb75029ffe8eb038f0b1d647af498691a22526dc84
 
 #KODIPROP:inputstream.adaptive.license_type=clearkey
 #KODIPROP:inputstream.adaptive.license_key={"keys": [{"kty": "oct", "k": "kRuZYLWAm0rLc0Qe9L8s0Q", "kid": "4hizX1YxniroZkeCPP7EOw"}, {"kty": "oct", "k": "fo9QDO9RWV89Q6yvqxqPtA", "kid": "U2DhLUuyUZqRSNEImlWQjQ"}, {"kty": "oct", "k": "lUMwOQAEcvvNMYYE6Tpjcg", "kid": "-oFmneeQQUG3cVxtyEVIfQ"}, {"kty": "oct", "k": "YksanI0ZcWgAus55WMF2sQ", "kid": "60RIAXKtJEff9WZdE2K2-A"}, {"kty": "oct", "k": "wVVzqedLBoNuV92D_YxMvw", "kid": "fI45HbYNmBleXjTr54gSlA"}]}
