@@ -5,7 +5,7 @@ import urllib.request
 import time
 import sys
 
-# Playlist URL and specific User-Agent as requested
+# Direct URL input & correct User-Agent
 PLAYLIST_URL = "https://game.playindia.fun/Jtv/RiYlIZ/Playlist.m3u"
 OUTPUT_FILE = "final_playlist.m3u"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -38,9 +38,9 @@ def fetch_keys(license_url, retries=3):
                 raw_data = response.read().decode()
                 data = json.loads(raw_data)
                 
-                if "base64" in data and "keys" in data["base64"]:
-                    kodi_key_format = {"keys": data["base64"]["keys"]}
-                    return license_url, json.dumps(kodi_key_format)
+                # Server ton poora JSON (base64, keys, expire) as-it-is return karega
+                if data:
+                    return license_url, json.dumps(data)
                 else:
                     return license_url, None
         except Exception as e:
@@ -53,7 +53,11 @@ def fetch_keys(license_url, retries=3):
 def process_playlist():
     content = fetch_playlist_content()
     if not content:
-        sys.exit(1)  # GitHub Actions nu fail status den layi je download na hove
+        sys.exit(1)
+
+    # 1. Cookies/Pipe format nu clean query parameter vich badlan layi stream links nu fix karo
+    # Eh %7Ccookie= ya |cookie= nu hata ke ? bana dega te extra &User-Agent nu v saaf kar dega
+    content = re.sub(r'(%7Ccookie=|\|cookie=)(__hdnea__=[^&\s]+)(?:&User-Agent=[^\s]+)?', r'?\2', content)
 
     pattern = r"(#KODIPROP:inputstream.adaptive.license_key=)(https://[^\s]+)"
     matches = list(re.finditer(pattern, content))
