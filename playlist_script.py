@@ -1,48 +1,46 @@
 import concurrent.futures
 import json
 import re
-import urllib.request
 import time
 import sys
+import cloudscraper
 
-# Direct URL input & correct User-Agent
 PLAYLIST_URL = "https://game.playindia.fun/Jtv/RiYlIZ/Playlist.m3u"
 OUTPUT_FILE = "final_playlist.m3u"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 def fetch_playlist_content():
-    print("Playlist download ho rahi hai...")
-    req = urllib.request.Request(
-        PLAYLIST_URL,
-        headers={"User-Agent": USER_AGENT}
-    )
+    print("Playlist download ho rahi hai (Cloudscraper bypass te Header nal)...")
+    scraper = cloudscraper.create_scraper()
+    headers = {
+        "User-Agent": USER_AGENT
+    }
     try:
-        with urllib.request.urlopen(req, timeout=20) as response:
-            return response.read().decode("utf-8")
+        response = scraper.get(PLAYLIST_URL, headers=headers, timeout=20)
+        # Check je Cloudflare challenge page taan nahi aa gaya
+        if "<html" in response.text.lower() and "challenge" in response.text.lower():
+            print("Error: Cloudflare block kar riha hai!")
+            return None
+        return response.text
     except Exception as e:
         print(f"Error: Playlist download nahi ho saki! {e}")
         return None
 
 def fetch_keys(license_url, retries=3):
-    req = urllib.request.Request(
-        license_url,
-        headers={
-            "User-Agent": USER_AGENT,
-            "Referer": "https://game.playindia.fun/",
-        },
-    )
+    scraper = cloudscraper.create_scraper()
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Referer": "https://game.playindia.fun/",
+    }
     
     for attempt in range(retries):
         try:
-            with urllib.request.urlopen(req, timeout=15) as response:
-                raw_data = response.read().decode()
-                data = json.loads(raw_data)
-                
-                # Server ton poora JSON (base64, keys, expire) as-it-is return karega
-                if data:
-                    return license_url, json.dumps(data)
-                else:
-                    return license_url, None
+            response = scraper.get(license_url, headers=headers, timeout=15)
+            data = response.json()
+            if data:
+                return license_url, json.dumps(data)
+            else:
+                return license_url, None
         except Exception as e:
             if attempt == retries - 1:
                 return license_url, None
@@ -55,8 +53,7 @@ def process_playlist():
     if not content:
         sys.exit(1)
 
-    # 1. Cookies/Pipe format nu clean query parameter vich badlan layi stream links nu fix karo
-    # Eh %7Ccookie= ya |cookie= nu hata ke ? bana dega te extra &User-Agent nu v saaf kar dega
+    # Cookies / Pipe format nu clean query parameter vich badlo
     content = re.sub(r'(%7Ccookie=|\|cookie=)(__hdnea__=[^&\s]+)(?:&User-Agent=[^\s]+)?', r'?\2', content)
 
     pattern = r"(#KODIPROP:inputstream.adaptive.license_key=)(https://[^\s]+)"
