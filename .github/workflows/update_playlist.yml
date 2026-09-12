@@ -1,10 +1,13 @@
 name: Update M3U Playlist
 
 on:
-  workflow_dispatch: # GitHub website ton manual run karan layi
-  repository_dispatch: # Bahri source ya external API ton run karan layi
+  workflow_dispatch:
+  repository_dispatch:
   schedule:
-    - cron: '*/15 * * * *' # Har 15 minute baad automatically chalega
+    - cron: '*/15 * * * *'
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -19,6 +22,11 @@ jobs:
       with:
         python-version: '3.10'
 
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install cloudscraper
+
     - name: Run script
       run: python playlist_script.py
 
@@ -27,6 +35,5 @@ jobs:
         git config --global user.name "GitHub Action Bot"
         git config --global user.email "action@github.com"
         git add final_playlist.m3u
-        # --allow-empty nall chahe file same hove, taan vi commit te push lazmi hovega
         git commit --allow-empty -m "Auto-update playlist [skip ci]"
         git push
